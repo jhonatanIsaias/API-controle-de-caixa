@@ -1,13 +1,14 @@
 import * as yup from 'yup';
+import { ObjectId } from 'mongodb';
 export class Company {
   constructor(
-    private comany_id: string,
+    private comany_id: ObjectId,
     private name: string,
     private password: string,
     private cnpj: string,
   ) {}
 
-  getComany_id(): string {
+  getComany_id(): ObjectId {
     return this.comany_id;
   }
   getName(): string {
@@ -18,10 +19,6 @@ export class Company {
   }
   getCnpj(): string {
     return this.cnpj;
-  }
-
-  setComany_id(comany_id: string): void {
-    this.comany_id = comany_id;
   }
   setName(name: string): void {
     this.name = name;
@@ -34,7 +31,6 @@ export class Company {
   }
 }
 export const bodyCompanyValidator: yup.Schema = yup.object().shape({
-  comany_id: yup.string().required(),
   name: yup.string().required(),
   password: yup.string().required().min(6),
   cnpj: yup.string().required(),

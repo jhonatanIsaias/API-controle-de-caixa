@@ -1,9 +1,9 @@
 import { MongoClient } from 'mongodb';
 
 const uri = process.env.URL_MONGO || '';
-const dbName = process.env.BDNAME;
+export const dbName = process.env.BDNAME;
 
-const client = new MongoClient(uri);
+export const client = new MongoClient(uri);
 
 export const connectMongo = async () => {
   try {
