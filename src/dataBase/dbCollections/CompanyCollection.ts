@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { Company } from '../../server/interfaces/Comany';
 
 export class ComanyCollection {
@@ -8,9 +8,9 @@ export class ComanyCollection {
     this.collection = db.collection<Company>('companies');
   }
 
-  async saveCompany(company: Company): Promise<Company> {
+  async saveCompany(company: Company): Promise<ObjectId> {
     const result = await this.collection.insertOne(company);
 
-    return result.acknowledged.valueOf.prototype;
+    return result.insertedId;
   }
 }
