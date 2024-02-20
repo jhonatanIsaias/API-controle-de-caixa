@@ -7,6 +7,7 @@ import { Db } from 'mongodb';
 import { client } from '../dataBase/connectiondb';
 import { dbName } from '../dataBase/connectiondb';
 import { EntradaCollection } from '../dataBase/dbCollections/entradaCollection';
+import { SaidaCollection } from '../dataBase/dbCollections/SaidaCollection';
 
 const app = express();
 app.use(express.json());
@@ -16,4 +17,5 @@ const DB: Db = client.db(dbName);
 connectMongo();
 const comanyCollection = new ComanyCollection(DB);
 const entradaCollection = new EntradaCollection(DB);
-export { app, comanyCollection, entradaCollection };
+const saidaCollection = new SaidaCollection(DB);
+export { app, comanyCollection, entradaCollection, saidaCollection };

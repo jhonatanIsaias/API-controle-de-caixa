@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { ObjectId } from 'mongodb';
 import moment from 'moment';
-export class Entrada {
+export class Saida {
   private date: Date;
   private value: number;
   private description: string;
@@ -12,7 +12,7 @@ export class Entrada {
     description: string,
     company_id: string,
   ) {
-    this.date = Entrada.converterDate(date);
+    this.date = Saida.converterDate(date);
     this.value = value;
     this.description = description;
     this.company_id = new ObjectId(company_id);
@@ -56,7 +56,7 @@ export class Entrada {
     return iso;
   }
 }
-export const bodyEntradaValidation: yup.Schema = yup.object().shape({
+export const bodySaidaValidation: yup.Schema = yup.object().shape({
   date: yup.string().required(),
   value: yup.number().required(),
   description: yup.string().required(),
