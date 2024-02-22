@@ -40,6 +40,16 @@ export class SaidaController {
       res.status(StatusCodes.BAD_REQUEST).send('saida não encontrada');
     }
   }
+  async deleteSaidaById(req: Request, res: Response) {
+    const { id } = req.params;
+    const objectId = new ObjectId(id);
+    try {
+      await saidaCollection.deleteSaidaById(objectId);
+      return res.status(StatusCodes.OK).send('saida deletada com sucesso');
+    } catch (error) {
+      return res.status(StatusCodes.BAD_REQUEST).send('saida');
+    }
+  }
 }
 export const validationSaida = validation({
   body: bodySaidaValidation,

@@ -46,4 +46,14 @@ export class SaidaCollection {
       throw Error('saida não encontrada' + error);
     }
   }
+  async deleteSaidaById(id: ObjectId) {
+    const saida = await this.collection.findOne({
+      _id: id,
+    });
+    if (saida) {
+      await this.collection.deleteOne(saida);
+    } else {
+      throw new Error('saida não encontrada');
+    }
+  }
 }

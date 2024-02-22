@@ -25,23 +25,21 @@ router.post('/entradas', validationEntrada, entradaController.createEntrada);
 router.post('/saidas', validationSaida, saidaController.createSaida);
 
 router.get(
-  '/entradas/:description/:comany_id',
+  '/entradas/:description/:_id',
   entradaController.findEntradaByDescription,
 );
 
 router.get(
-  '/entradas/:month/:year/:comany_id',
+  '/entradas/:month/:year/:_id',
   entradaController.findAllEntradaByDate,
 );
 
-router.get(
-  '/saidas/:description/:comany_id',
-  saidaController.findSaidaByDescription,
-);
+router.get('/saidas/:description/:_id', saidaController.findSaidaByDescription);
 
-router.get(
-  '/saidas/:month/:year/:comany_id',
-  saidaController.findAllSaidaByDate,
-);
+router.get('/saidas/:month/:year/:_id', saidaController.findAllSaidaByDate);
+
+router.delete('/entradas/:_id', entradaController.deleteEntradaById);
+
+router.delete('/saidas/:_id', saidaController.deleteSaidaById);
 
 export { router };

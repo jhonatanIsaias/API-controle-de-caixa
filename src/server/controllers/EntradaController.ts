@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { entradaCollection } from '../server';
-import { Entrada, bodyEntradaValidation } from '../interfaces/Entrada';
+import { Entrada, bodyEntradaValidator } from '../interfaces/Entrada';
 import { ObjectId } from 'mongodb';
 import { validation } from '../middleware/validation';
 export class EntradaController {
@@ -21,9 +21,9 @@ export class EntradaController {
       new ObjectId(comany_id),
     );
     if (entradas) {
-      res.status(StatusCodes.OK).json(entradas);
+      return res.status(StatusCodes.OK).json(entradas);
     } else {
-      res.status(StatusCodes.BAD_REQUEST).send('entrada não encontrada');
+      return res.status(StatusCodes.BAD_REQUEST).send('entrada não encontrada');
     }
   }
   async findAllEntradaByDate(req: Request, res: Response) {
@@ -35,12 +35,22 @@ export class EntradaController {
       new ObjectId(comany_id),
     );
     if (entradas) {
-      res.status(StatusCodes.OK).json(entradas);
+      return res.status(StatusCodes.OK).json(entradas);
     } else {
-      res.status(StatusCodes.BAD_REQUEST).send('entrada não encontrada');
+      return res.status(StatusCodes.BAD_REQUEST).send('entrada não encontrada');
+    }
+  }
+  async deleteEntradaById(req: Request, res: Response) {
+    const { id } = req.params;
+    const objectId = new ObjectId(id);
+    try {
+      await entradaCollection.deleteEntradaById(objectId);
+      return res.status(StatusCodes.OK).send('entrada deletada com sucesso');
+    } catch (error) {
+      return res.status(StatusCodes.BAD_REQUEST).send('entrada');
     }
   }
 }
 export const validationEntrada = validation({
-  body: bodyEntradaValidation,
+  body: bodyEntradaValidator,
 });

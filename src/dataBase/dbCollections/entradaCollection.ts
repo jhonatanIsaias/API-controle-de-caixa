@@ -50,4 +50,14 @@ export class EntradaCollection {
       throw Error('entrada não encontrada' + error);
     }
   }
+  async deleteEntradaById(id: ObjectId) {
+    const entrada = await this.collection.findOne({
+      _id: id,
+    });
+    if (entrada) {
+      await this.collection.deleteOne(entrada);
+    } else {
+      throw new Error('entrada não encontrada');
+    }
+  }
 }

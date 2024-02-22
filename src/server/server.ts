@@ -6,7 +6,7 @@ import { ComanyCollection } from '../dataBase/dbCollections/CompanyCollection';
 import { Db } from 'mongodb';
 import { client } from '../dataBase/connectiondb';
 import { dbName } from '../dataBase/connectiondb';
-import { EntradaCollection } from '../dataBase/dbCollections/entradaCollection';
+import { EntradaCollection } from '../dataBase/dbCollections/EntradaCollection';
 import { SaidaCollection } from '../dataBase/dbCollections/SaidaCollection';
 
 const app = express();

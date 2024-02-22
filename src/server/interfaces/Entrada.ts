@@ -1,5 +1,5 @@
-import * as yup from 'yup';
 import { ObjectId } from 'mongodb';
+import * as yup from 'yup';
 import moment from 'moment';
 export class Entrada {
   private date: Date;
@@ -56,9 +56,9 @@ export class Entrada {
     return iso;
   }
 }
-export const bodyEntradaValidation: yup.Schema = yup.object().shape({
+export const bodyEntradaValidator: yup.Schema = yup.object().shape({
   date: yup.string().required(),
   value: yup.number().required(),
   description: yup.string().required(),
-  company_id: yup.string().required(),
+  _id: yup.string().required(),
 });
