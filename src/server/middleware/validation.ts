@@ -32,3 +32,14 @@ export const validation: Ivalidation = (schemas) => async (req, res, next) => {
     return res.status(StatusCodes.BAD_REQUEST).json({ errors: errorsResult });
   }
 };
+export const validationDescription = validation({
+  params: yup.object().shape({
+    description: yup.string().required(),
+    _id: yup.string().required().min(24),
+  }),
+});
+export const validationId = validation({
+  params: yup.object().shape({
+    _id: yup.string().required().min(24),
+  }),
+});

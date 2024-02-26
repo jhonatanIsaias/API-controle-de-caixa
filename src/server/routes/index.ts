@@ -11,6 +11,7 @@ import {
   SaidaController,
   validationSaida,
 } from '../controllers/SaidaController';
+import { validationDescription, validationId } from '../middleware/validation';
 
 const router = Router();
 const companyController = new CompanyController();
@@ -26,20 +27,34 @@ router.post('/saidas', validationSaida, saidaController.createSaida);
 
 router.get(
   '/entradas/:description/:_id',
+  validationDescription,
   entradaController.findEntradaByDescription,
 );
 
 router.get(
   '/entradas/:month/:year/:_id',
+  validationId,
   entradaController.findAllEntradaByDate,
 );
 
-router.get('/saidas/:description/:_id', saidaController.findSaidaByDescription);
+router.get(
+  '/saidas/:description/:_id',
+  validationDescription,
+  saidaController.findSaidaByDescription,
+);
 
-router.get('/saidas/:month/:year/:_id', saidaController.findAllSaidaByDate);
+router.get(
+  '/saidas/:month/:year/:_id',
+  validationId,
+  saidaController.findAllSaidaByDate,
+);
 
-router.delete('/entradas/:_id', entradaController.deleteEntradaById);
+router.delete(
+  '/entradas/:_id',
+  validationId,
+  entradaController.deleteEntradaById,
+);
 
-router.delete('/saidas/:_id', saidaController.deleteSaidaById);
+router.delete('/saidas/:_id', validationId, saidaController.deleteSaidaById);
 
 export { router };

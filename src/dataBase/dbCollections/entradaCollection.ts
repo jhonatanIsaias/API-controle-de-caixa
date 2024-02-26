@@ -32,22 +32,22 @@ export class EntradaCollection {
     year: number,
     company_id: ObjectId,
   ) {
-    try {
-      const startDate = new Date(year, month - 1, 1);
-      const lastDay = new Date(year, month, 0).getDate();
-      const endDate = new Date(year, month - 1, lastDay);
-      const entradas = await this.collection
-        .find({
-          date: {
-            $gte: startDate,
-            $lte: endDate,
-          },
-          company_id: company_id,
-        })
-        .toArray();
+    const startDate = new Date(year, month - 1, 1);
+    const lastDay = new Date(year, month, 0).getDate();
+    const endDate = new Date(year, month - 1, lastDay);
+    const entradas = await this.collection
+      .find({
+        date: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+        company_id: company_id,
+      })
+      .toArray();
+    if (entradas.length !== 0) {
       return entradas;
-    } catch (error) {
-      throw Error('entrada não encontrada' + error);
+    } else {
+      throw new Error('entrada não encontrada');
     }
   }
   async deleteEntradaById(id: ObjectId) {
