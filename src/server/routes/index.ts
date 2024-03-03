@@ -12,6 +12,7 @@ import {
   validationSaida,
 } from '../controllers/SaidaController';
 import { validationDescription, validationId } from '../middleware/validation';
+import { auth } from '../middleware/JwtToken';
 
 const router = Router();
 const companyController = new CompanyController();
@@ -27,6 +28,7 @@ router.post('/saidas', validationSaida, saidaController.createSaida);
 
 router.get(
   '/entradas/:description/:_id',
+  auth,
   validationDescription,
   entradaController.findEntradaByDescription,
 );
@@ -39,6 +41,7 @@ router.get(
 
 router.get(
   '/saidas/:description/:_id',
+  auth,
   validationDescription,
   saidaController.findSaidaByDescription,
 );
@@ -56,5 +59,9 @@ router.delete(
 );
 
 router.delete('/saidas/:_id', validationId, saidaController.deleteSaidaById);
+
+// ATENTICAÇÃO DE USUARIO
+
+router.post('/login', companyController.login);
 
 export { router };
