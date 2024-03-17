@@ -60,5 +60,5 @@ export const bodySaidaValidation: yup.Schema = yup.object().shape({
   date: yup.string().required(),
   value: yup.number().required(),
   description: yup.string().required(),
-  company_id: yup.string().required(),
+  _id: yup.string().required(),
 });

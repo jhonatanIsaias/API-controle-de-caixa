@@ -9,23 +9,32 @@ import { generateJWTToken } from '../middleware/JwtToken';
 export class CompanyController {
   // eslint-disable-next-line @typescript-eslint/ban-types
   async createCompany(req: Request, res: Response) {
-    const passwordEncrypted = await hash(req.body.password, 8);
-    req.body.password = passwordEncrypted;
-    const result = await comanyCollection.saveCompany(req.body);
-    return res.status(StatusCodes.CREATED).json(result).send();
+    try {
+      const passwordEncrypted = await hash(req.body.password, 8);
+      req.body.password = passwordEncrypted;
+      const result = await comanyCollection.saveCompany(req.body);
+      return res.status(StatusCodes.CREATED).json(result).send();
+    } catch (error) {
+      res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+    }
   }
   async login(req: Request, res: Response) {
-    const { cnpj, password } = req.body;
+    const { email, password } = req.body;
     try {
-      const comanyId = await comanyCollection.autenticationComany(
-        cnpj,
+      const company = await comanyCollection.autenticationComany(
+        email,
         password,
       );
-      const token = generateJWTToken(comanyId);
-      res.status(StatusCodes.ACCEPTED).json({ token: token });
+      const token = generateJWTToken(company._id);
+      res.status(StatusCodes.ACCEPTED).json({
+        token: token,
+        company_id: company._id,
+        name: company.name,
+        cnpj: company.cnpj,
+      });
     } catch (error) {
       console.log(error);
-      res.status(StatusCodes.FORBIDDEN).send(`${error}`);
+      res.status(StatusCodes.FORBIDDEN).json({ error: error.message });
     }
   }
 }

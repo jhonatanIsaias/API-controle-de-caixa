@@ -1,7 +1,8 @@
 import { Collection, ObjectId } from 'mongodb';
 import { Entrada } from '../../server/interfaces/Entrada';
 import { Db } from 'mongodb';
-
+import { Workbook } from 'exceljs';
+import * as path from 'path';
 export class EntradaCollection {
   private collection: Collection<Entrada>;
 
@@ -58,6 +59,45 @@ export class EntradaCollection {
       await this.collection.deleteOne(entrada);
     } else {
       throw new Error('entrada não encontrada');
+    }
+  }
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  async generatespreadsheet(month: number, year: number, company_id: ObjectId) {
+    try {
+      const dados = await this.findAllEntradaByDate(month, year, company_id);
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet('planilha de entradas');
+      worksheet.addRow(['data', 'valor', 'descrição']);
+      dados.forEach((dado) => {
+        worksheet.addRow([dado.date, dado.value, dado.description]);
+      });
+      const headerRow = worksheet.getRow(1);
+      headerRow.eachCell((cell) => {
+        cell.font = { bold: true };
+      });
+
+      // Adicionando bordas
+      const lastRow = worksheet.lastRow;
+      if (lastRow === undefined) {
+        return;
+      }
+
+      // Cálculo do total
+      const totalRow = worksheet.addRow([
+        'Total',
+        { formula: `SUM(B2:B${lastRow.number})` },
+        '',
+      ]);
+      totalRow.getCell(1).font = { bold: true };
+
+      const caminhoArquivo = path.resolve(
+        'temp',
+        `planilha${month}-${year}.xlsx`,
+      );
+      await workbook.xlsx.writeFile(caminhoArquivo);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 }

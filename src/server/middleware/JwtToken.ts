@@ -15,7 +15,6 @@ export const generateJWTToken = (company_id: string) => {
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization;
-  console.log(auth);
   const secret: string = process.env.JWT_SECRET || '';
   try {
     if (!auth) {

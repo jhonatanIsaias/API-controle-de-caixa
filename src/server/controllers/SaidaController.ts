@@ -7,8 +7,8 @@ import { validation } from '../middleware/validation';
 export class SaidaController {
   // eslint-disable-next-line @typescript-eslint/ban-types
   async createSaida(req: Request, res: Response) {
-    const { date, value, description, company_id } = req.body;
-    const saida = new Saida(date, value, description, company_id);
+    const { date, value, description, _id } = req.body;
+    const saida = new Saida(date, value, description, _id);
     const result = await saidaCollection.saveSaida(saida);
     return res.status(StatusCodes.CREATED).json(result).send();
   }

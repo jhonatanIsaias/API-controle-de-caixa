@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import * as yup from 'yup';
-import moment from 'moment';
+//import moment from 'moment';
 export class Entrada {
   private date: Date;
   private value: number;
@@ -50,9 +50,9 @@ export class Entrada {
     this.company_id = company_id;
   }
   static converterDate(date: string): Date {
-    const dateMoment = moment(date, 'DD-MM-YYYY');
-    const dateiso = dateMoment.format('YYYY-MM-DD');
-    const iso = new Date(dateiso);
+    //const dateMoment = moment(date, 'YYYY-MM-DD');
+    // const dateiso = dateMoment.format('YYYY-MM-DD');
+    const iso = new Date(date);
     return iso;
   }
 }

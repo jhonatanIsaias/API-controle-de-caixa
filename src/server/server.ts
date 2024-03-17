@@ -8,11 +8,12 @@ import { client } from '../dataBase/connectiondb';
 import { dbName } from '../dataBase/connectiondb';
 import { EntradaCollection } from '../dataBase/dbCollections/EntradaCollection';
 import { SaidaCollection } from '../dataBase/dbCollections/SaidaCollection';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(router);
-
 const DB: Db = client.db(dbName);
 connectMongo();
 const comanyCollection = new ComanyCollection(DB);

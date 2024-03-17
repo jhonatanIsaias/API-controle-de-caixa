@@ -10,14 +10,25 @@ export class ComanyCollection {
   }
 
   async saveCompany(company: Company): Promise<ObjectId> {
+    const cnpj = await this.findCompanyByCnpj(company.cnpj);
+    console.log(cnpj);
+    if (cnpj !== null) {
+      throw new Error('empresa já cadastrada');
+    }
     const result = await this.collection.insertOne(company);
 
     return result.insertedId;
   }
   async findCompanyByCnpj(cnpj: string) {
+    const result = await this.collection.findOne({
+      cnpj: cnpj,
+    });
+    return result;
+  }
+  async findCompanyByEmail(email: string) {
     const result = await this.collection
       .find({
-        cnpj: cnpj,
+        email: email,
       })
       .toArray();
     if (result != null) {
@@ -26,8 +37,8 @@ export class ComanyCollection {
     }
     return null;
   }
-  async autenticationComany(cnpj: string, password: string) {
-    const result = await this.findCompanyByCnpj(cnpj);
+  async autenticationComany(email: string, password: string) {
+    const result = await this.findCompanyByEmail(email);
     let isValid = false;
 
     if (result != null) {
@@ -39,6 +50,10 @@ export class ComanyCollection {
     if (!isValid) {
       throw new Error('senha incorreta');
     }
-    return result[0]._id;
+    return {
+      _id: result[0]._id,
+      name: result[0].name,
+      cnpj: result[0].cnpj,
+    };
   }
 }

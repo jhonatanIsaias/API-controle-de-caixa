@@ -5,11 +5,12 @@ import { entradaCollection } from '../server';
 import { Entrada, bodyEntradaValidator } from '../interfaces/Entrada';
 import { ObjectId } from 'mongodb';
 import { validation } from '../middleware/validation';
+import path from 'path';
 export class EntradaController {
   // eslint-disable-next-line @typescript-eslint/ban-types
   async createEntrada(req: Request, res: Response) {
-    const { date, value, description, company_id } = req.body;
-    const entrada = new Entrada(date, value, description, company_id);
+    const { date, value, description, _id } = req.body;
+    const entrada = new Entrada(date, value, description, _id);
     const result = await entradaCollection.saveEntrada(entrada);
     return res.status(StatusCodes.CREATED).json(result).send();
   }
@@ -37,7 +38,7 @@ export class EntradaController {
       );
       return res.status(StatusCodes.OK).json(entradas);
     } catch (error) {
-      return res.status(StatusCodes.BAD_REQUEST).send(`${error}`);
+      return res.status(StatusCodes.BAD_REQUEST).json({ error:error.message });
     }
   }
   async deleteEntradaById(req: Request, res: Response) {
@@ -48,6 +49,21 @@ export class EntradaController {
       return res.status(StatusCodes.OK).send('entrada deletada com sucesso');
     } catch (error) {
       return res.status(StatusCodes.BAD_REQUEST).send(`${error}`);
+    }
+  }
+  async generatespreadsheet(req: Request, res: Response) {
+    try {
+      const { month, year, _id } = req.params;
+      await entradaCollection.generatespreadsheet(
+        parseInt(month),
+        parseInt(year),
+        new ObjectId(_id),
+      );
+      res.download(path.resolve('temp', `planilha${month}-${year}.xlsx`));
+      return;
+    } catch (error) {
+      res.send().json({ error: error.message });
+      return;
     }
   }
 }

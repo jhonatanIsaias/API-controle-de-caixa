@@ -22,9 +22,14 @@ const saidaController = new SaidaController();
 //criando uma nova empresa
 router.post('/companies', validationCompany, companyController.createCompany);
 //criando uma nova entrada
-router.post('/entradas', validationEntrada, entradaController.createEntrada);
+router.post(
+  '/entradas',
+  validationEntrada,
+  auth,
+  entradaController.createEntrada,
+);
 //criando uma nova saida
-router.post('/saidas', validationSaida, saidaController.createSaida);
+router.post('/saidas', validationSaida, auth, saidaController.createSaida);
 
 router.get(
   '/entradas/:description/:_id',
@@ -36,7 +41,14 @@ router.get(
 router.get(
   '/entradas/:month/:year/:_id',
   validationId,
+  auth,
   entradaController.findAllEntradaByDate,
+);
+router.get(
+  '/entradas-planilha/:month/:year/:_id',
+  validationId,
+  auth,
+  entradaController.generatespreadsheet,
 );
 
 router.get(
@@ -49,6 +61,7 @@ router.get(
 router.get(
   '/saidas/:month/:year/:_id',
   validationId,
+  auth,
   saidaController.findAllSaidaByDate,
 );
 
