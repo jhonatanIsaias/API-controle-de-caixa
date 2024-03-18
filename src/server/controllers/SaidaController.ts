@@ -27,17 +27,17 @@ export class SaidaController {
     }
   }
   async findAllSaidaByDate(req: Request, res: Response) {
-    const { month, year, comany_id } = req.params;
+    const { month, year, _id } = req.params;
 
-    const saidas = await saidaCollection.findAllSaidaByDate(
-      parseInt(month),
-      parseInt(year),
-      new ObjectId(comany_id),
-    );
-    if (saidas) {
-      res.status(StatusCodes.OK).json(saidas);
-    } else {
-      res.status(StatusCodes.BAD_REQUEST).send('saida não encontrada');
+    try {
+      const saidas = await saidaCollection.findAllSaidaByDate(
+        parseInt(month),
+        parseInt(year),
+        new ObjectId(_id),
+      );
+      return res.status(StatusCodes.OK).json(saidas);
+    } catch (error) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
   }
   async deleteSaidaById(req: Request, res: Response) {

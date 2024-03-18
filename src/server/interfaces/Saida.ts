@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import { ObjectId } from 'mongodb';
-import moment from 'moment';
+
 export class Saida {
   private date: Date;
   private value: number;
@@ -50,9 +50,7 @@ export class Saida {
     this.company_id = company_id;
   }
   static converterDate(date: string): Date {
-    const dateMoment = moment(date, 'DD-MM-YYYY');
-    const dateiso = dateMoment.format('YYYY-MM-DD');
-    const iso = new Date(dateiso);
+    const iso = new Date(date);
     return iso;
   }
 }

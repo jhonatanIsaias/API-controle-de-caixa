@@ -38,7 +38,7 @@ export class EntradaController {
       );
       return res.status(StatusCodes.OK).json(entradas);
     } catch (error) {
-      return res.status(StatusCodes.BAD_REQUEST).json({ error:error.message });
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
     }
   }
   async deleteEntradaById(req: Request, res: Response) {

@@ -28,24 +28,25 @@ export class SaidaCollection {
     }
   }
   async findAllSaidaByDate(month: number, year: number, company_id: ObjectId) {
-    try {
-      const startDate = new Date(year, month - 1, 1);
-      const lastDay = new Date(year, month, 0).getDate();
-      const endDate = new Date(year, month - 1, lastDay);
-      const saidas = await this.collection
-        .find({
-          date: {
-            $gte: startDate,
-            $lte: endDate,
-          },
-          company_id: company_id,
-        })
-        .toArray();
+    const startDate = new Date(year, month - 1, 1);
+    const lastDay = new Date(year, month, 0).getDate();
+    const endDate = new Date(year, month - 1, lastDay);
+    const saidas = await this.collection
+      .find({
+        date: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+        company_id: company_id,
+      })
+      .toArray();
+    if (saidas.length !== 0) {
       return saidas;
-    } catch (error) {
-      throw Error('saida não encontrada' + error);
+    } else {
+      throw new Error('saidas não encontradas');
     }
   }
+
   async deleteSaidaById(id: ObjectId) {
     const saida = await this.collection.findOne({
       _id: id,
