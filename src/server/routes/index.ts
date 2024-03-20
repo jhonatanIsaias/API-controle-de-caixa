@@ -13,11 +13,13 @@ import {
 } from '../controllers/SaidaController';
 import { validationDescription, validationId } from '../middleware/validation';
 import { auth } from '../middleware/JwtToken';
+import { PlanilhaController } from '../controllers/planilhaController';
 
 const router = Router();
 const companyController = new CompanyController();
 const entradaController = new EntradaController();
 const saidaController = new SaidaController();
+const planilhaController = new PlanilhaController();
 
 //criando uma nova empresa
 router.post('/companies', validationCompany, companyController.createCompany);
@@ -48,7 +50,7 @@ router.get(
   '/entradas-planilha/:month/:year/:_id',
   validationId,
   auth,
-  entradaController.generatespreadsheet,
+  planilhaController.generatespreadsheet,
 );
 
 router.get(

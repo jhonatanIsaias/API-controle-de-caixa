@@ -1,8 +1,8 @@
 import { Collection, ObjectId } from 'mongodb';
 import { Entrada } from '../../server/interfaces/Entrada';
 import { Db } from 'mongodb';
-import { Workbook } from 'exceljs';
-import * as path from 'path';
+//import { Workbook } from 'exceljs';
+//import * as path from 'path';
 export class EntradaCollection {
   private collection: Collection<Entrada>;
 
@@ -62,7 +62,7 @@ export class EntradaCollection {
     }
   }
   // eslint-disable-next-line @typescript-eslint/ban-types
-  async generatespreadsheet(month: number, year: number, company_id: ObjectId) {
+  /* async generatespreadsheet(month: number, year: number, company_id: ObjectId) {
     try {
       const dados = await this.findAllEntradaByDate(month, year, company_id);
       const workbook = new Workbook();
@@ -99,5 +99,5 @@ export class EntradaCollection {
     } catch (error: any) {
       throw new Error(error);
     }
-  }
+  }*/
 }

@@ -5,7 +5,7 @@ import { entradaCollection } from '../server';
 import { Entrada, bodyEntradaValidator } from '../interfaces/Entrada';
 import { ObjectId } from 'mongodb';
 import { validation } from '../middleware/validation';
-import path from 'path';
+//import path from 'path';
 export class EntradaController {
   // eslint-disable-next-line @typescript-eslint/ban-types
   async createEntrada(req: Request, res: Response) {
@@ -51,7 +51,7 @@ export class EntradaController {
       return res.status(StatusCodes.BAD_REQUEST).send(`${error}`);
     }
   }
-  async generatespreadsheet(req: Request, res: Response) {
+  /*async generatespreadsheet(req: Request, res: Response) {
     try {
       const { month, year, _id } = req.params;
       await entradaCollection.generatespreadsheet(
@@ -65,7 +65,7 @@ export class EntradaController {
       res.send().json({ error: error.message });
       return;
     }
-  }
+  }*/
 }
 export const validationEntrada = validation({
   body: bodyEntradaValidator,
