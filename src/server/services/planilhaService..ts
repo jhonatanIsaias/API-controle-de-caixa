@@ -29,12 +29,12 @@ export const generatespreadsheet = async (
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('planilha de entradas e saidas');
     worksheet.addRow([
-      'data entrada',
+      'data',
       'descrição entrada',
       'entrada',
-      'data saída',
       'descrição saída',
       'saída',
+      'total',
     ]);
     let cont = 2;
     dadosEntrada.forEach((dadoEntrada) => {
@@ -48,9 +48,8 @@ export const generatespreadsheet = async (
 
     dadosSaida.forEach((dadoSaida) => {
       const valorNumerico = Number(dadoSaida.value);
-      worksheet.getCell(`D${cont}`).value = dadoSaida.date; // Coluna 'saida'
-      worksheet.getCell(`E${cont}`).value = dadoSaida.description;
-      worksheet.getCell(`F${cont}`).value = valorNumerico; // Coluna 'descrição Saida'
+      worksheet.getCell(`D${cont}`).value = dadoSaida.description;
+      worksheet.getCell(`E${cont}`).value = valorNumerico; // Coluna 'descrição Saida'
       cont++; // Avançando para a próxima linha
     });
     const headerRow = worksheet.getRow(1);
@@ -64,20 +63,27 @@ export const generatespreadsheet = async (
       return;
     }
     worksheet.getColumn(3).numFmt = '"R$"#,##0.00';
+    worksheet.getColumn(5).numFmt = '"R$"#,##0.00';
     worksheet.getColumn(6).numFmt = '"R$"#,##0.00';
     worksheet.getCell(`C${lastRow.number + 1}`).value = {
       formula: `SUM(C2:C${lastRow.number})`,
     };
     worksheet.mergeCells(`C${lastRow.number + 1}:C${lastRow.number + 2}`);
-    worksheet.mergeCells(`A${lastRow.number + 1}:B${lastRow.number + 2}`);
-    worksheet.getCell(`A${lastRow.number + 1}`).value = 'total';
-    worksheet.getCell(`A${lastRow.number + 1}`).font = {
+    worksheet.mergeCells(`B${lastRow.number + 1}:B${lastRow.number + 2}`);
+    worksheet.getCell(`B${lastRow.number + 1}`).value = 'total';
+    worksheet.getCell(`B${lastRow.number + 1}`).font = {
       bold: true,
       size: 18,
     };
+    worksheet.mergeCells(`A${lastRow.number + 1}:A${lastRow.number + 2}`);
+    worksheet.getCell(`A${lastRow.number + 1}`).fill = {
+      type: 'pattern',
+      pattern: 'darkVertical',
+      fgColor: { argb: '0000' },
+    };
     // set cell alignment to top-left, middle-center, bottom-righ
-    worksheet.getCell(`A${lastRow.number + 1}`).alignment = {
-      vertical: 'justify',
+    worksheet.getCell(`B${lastRow.number + 1}`).alignment = {
+      vertical: 'middle',
       horizontal: 'center',
     };
     worksheet.getCell(`C${lastRow.number + 1}`).font = {
@@ -90,28 +96,28 @@ export const generatespreadsheet = async (
       horizontal: 'center',
     };
     //rederizando saidas
-    worksheet.getCell(`F${lastRow.number + 1}`).value = {
-      formula: `SUM(F2:F${lastRow.number})`,
+    worksheet.getCell(`E${lastRow.number + 1}`).value = {
+      formula: `SUM(E2:E${lastRow.number})`,
     };
-    worksheet.mergeCells(`F${lastRow.number + 1}:F${lastRow.number + 2}`);
-    worksheet.mergeCells(`D${lastRow.number + 1}:E${lastRow.number + 2}`);
+    worksheet.mergeCells(`D${lastRow.number + 1}:D${lastRow.number + 2}`);
+    worksheet.mergeCells(`E${lastRow.number + 1}:E${lastRow.number + 2}`);
     worksheet.getCell(`D${lastRow.number + 1}`).value = 'total';
-    worksheet.getCell(`D${lastRow.number + 1}`).font = {
+    worksheet.getCell(`E${lastRow.number + 1}`).font = {
       bold: true,
       size: 18,
     };
     // set cell alignment to top-left, middle-center, bottom-righ
     worksheet.getCell(`D${lastRow.number + 1}`).alignment = {
-      vertical: 'justify',
+      vertical: 'middle',
       horizontal: 'center',
     };
-    worksheet.getCell(`F${lastRow.number + 1}`).font = {
+    worksheet.getCell(`D${lastRow.number + 1}`).font = {
       bold: true,
       size: 18,
     };
     // set cell alignment to top-left, middle-center, bottom-righ
-    worksheet.getCell(`F${lastRow.number + 1}`).alignment = {
-      vertical: 'justify',
+    worksheet.getCell(`E${lastRow.number + 1}`).alignment = {
+      vertical: 'middle',
       horizontal: 'center',
     };
     worksheet.getColumn('A').width = 20; // Largura da coluna 'data'
@@ -119,8 +125,7 @@ export const generatespreadsheet = async (
     worksheet.getColumn('C').width = 20; // Largura da coluna 'descrição Entrada'
     worksheet.getColumn('D').width = 20; // Espaçamento
     worksheet.getColumn('E').width = 20; // Largura da coluna 'data'
-    worksheet.getColumn('F').width = 25; // Largura da coluna 'saida'
-    worksheet.getColumn('G').width = 20;
+    worksheet.getColumn('F').width = 20; // Largura da coluna 'data'
 
     worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
       row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
@@ -132,38 +137,38 @@ export const generatespreadsheet = async (
         };
       });
     });
-
-    worksheet.getColumn('A').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFCCEEFF' }, // Verde claro
-    };
-    worksheet.getColumn('B').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFCCEEFF' }, // Verde claro
-    };
-    worksheet.getColumn('C').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFCCEEFF' }, // Verde claro
-    };
-    worksheet.getColumn('D').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFFFCCCC' }, // Vermelho claro
-    };
-    worksheet.getColumn('E').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFFFCCCC' }, // Vermelho claro
-    };
-    worksheet.getColumn('F').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFFFCCCC' }, // Vermelho claro
+    worksheet.getCell('H6').border = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' },
     };
 
+    worksheet.getCell('H8').border = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' },
+    };
+    worksheet.mergeCells(`H6:I7`);
+    worksheet.mergeCells(`H8:I9`);
+    worksheet.getCell('H6').value = 'TOTAL GERAL';
+    worksheet.getCell('H6').alignment = {
+      vertical: 'middle',
+      horizontal: 'center',
+    };
+    worksheet.getCell('H8').alignment = {
+      vertical: 'middle',
+      horizontal: 'center',
+    };
+    worksheet.getCell('H8').value = {
+      formula: `C${lastRow.number + 1} - E${lastRow.number + 1}`,
+    };
+    worksheet.getCell('F2').value = {
+      formula: `C2 - E2`,
+      shareType: 'shared',
+      ref: `F2:f${lastRow.number}`,
+    };
     const caminhoArquivo = path.resolve(
       'temp',
       `planilha${month}-${year}.xlsx`,
