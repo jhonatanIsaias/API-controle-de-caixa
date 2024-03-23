@@ -65,6 +65,7 @@ export const generatespreadsheet = async (
     worksheet.getColumn(3).numFmt = '"R$"#,##0.00';
     worksheet.getColumn(5).numFmt = '"R$"#,##0.00';
     worksheet.getColumn(6).numFmt = '"R$"#,##0.00';
+    worksheet.getColumn(8).numFmt = '"R$"#,##0.00';
     worksheet.getCell(`C${lastRow.number + 1}`).value = {
       formula: `SUM(C2:C${lastRow.number})`,
     };
@@ -81,6 +82,12 @@ export const generatespreadsheet = async (
       pattern: 'darkVertical',
       fgColor: { argb: '0000' },
     };
+    worksheet.mergeCells(`F${lastRow.number + 1}:F${lastRow.number + 2}`);
+    worksheet.getCell(`F${lastRow.number + 1}`).fill = {
+      type: 'pattern',
+      pattern: 'darkVertical',
+      fgColor: { argb: '0000' },
+    };
     // set cell alignment to top-left, middle-center, bottom-righ
     worksheet.getCell(`B${lastRow.number + 1}`).alignment = {
       vertical: 'middle',
@@ -89,11 +96,6 @@ export const generatespreadsheet = async (
     worksheet.getCell(`C${lastRow.number + 1}`).font = {
       bold: true,
       size: 18,
-    };
-    // set cell alignment to top-left, middle-center, bottom-righ
-    worksheet.getCell(`C${lastRow.number + 1}`).alignment = {
-      vertical: 'justify',
-      horizontal: 'center',
     };
     //rederizando saidas
     worksheet.getCell(`E${lastRow.number + 1}`).value = {
@@ -126,6 +128,7 @@ export const generatespreadsheet = async (
     worksheet.getColumn('D').width = 20; // Espaçamento
     worksheet.getColumn('E').width = 20; // Largura da coluna 'data'
     worksheet.getColumn('F').width = 20; // Largura da coluna 'data'
+    worksheet.getColumn('H').width = 20;
 
     worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
       row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
@@ -164,11 +167,20 @@ export const generatespreadsheet = async (
     worksheet.getCell('H8').value = {
       formula: `C${lastRow.number + 1} - E${lastRow.number + 1}`,
     };
+
     worksheet.getCell('F2').value = {
-      formula: `C2 - E2`,
-      shareType: 'shared',
-      ref: `F2:f${lastRow.number}`,
+      sharedFormula: 'C2-E2',
     };
+    // Aumentando a fonte do valor do total geral
+    worksheet.getCell(`H9`).font = {
+      bold: true,
+      size: 18, // Tamanho da fonte aumentado para 18
+    };
+
+    // Removendo as bordas das células G e H
+
+    // Preenchendo a fórmula compartilhada para as outras células
+    worksheet.fillFormula(`F2:F${lastRow.number}`, 'C2-E2');
     const caminhoArquivo = path.resolve(
       'temp',
       `planilha${month}-${year}.xlsx`,

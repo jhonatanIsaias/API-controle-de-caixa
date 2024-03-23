@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { bodyCompanyValidator } from '../interfaces/Comany';
 import { validation } from '../middleware/validation';
 import { StatusCodes } from 'http-status-codes';
-import { comanyCollection } from '../server';
+import { companyCollection } from '../server';
 import { hash } from 'bcrypt';
 import { generateJWTToken } from '../middleware/JwtToken';
 
@@ -12,7 +12,7 @@ export class CompanyController {
     try {
       const passwordEncrypted = await hash(req.body.password, 8);
       req.body.password = passwordEncrypted;
-      const result = await comanyCollection.saveCompany(req.body);
+      const result = await companyCollection.saveCompany(req.body);
       return res.status(StatusCodes.CREATED).json(result).send();
     } catch (error) {
       res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
@@ -21,7 +21,7 @@ export class CompanyController {
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
     try {
-      const company = await comanyCollection.autenticationComany(
+      const company = await companyCollection.autenticationComany(
         email,
         password,
       );

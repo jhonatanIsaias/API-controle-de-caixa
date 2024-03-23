@@ -47,7 +47,7 @@ router.get(
   entradaController.findAllEntradaByDate,
 );
 router.get(
-  '/entradas-planilha/:month/:year/:_id',
+  '/gerar-planilha/:month/:year/:_id',
   validationId,
   auth,
   planilhaController.generatespreadsheet,
