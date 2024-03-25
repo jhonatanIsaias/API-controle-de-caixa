@@ -1,3 +1,4 @@
 import { app } from './server/server';
-
-app.listen(3333, () => console.log('estou funcionando'));
+import 'dotenv/config';
+const PORT = process.env.PORT || 3333;
+app.listen(PORT, () => console.log('estou funcionando'));
