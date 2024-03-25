@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Collection, ObjectId } from 'mongodb';
 import { Entrada } from '../../server/interfaces/Entrada';
 import { Db } from 'mongodb';

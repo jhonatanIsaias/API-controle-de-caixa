@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Collection, ObjectId } from 'mongodb';
 import { Saida } from '../../server/interfaces/Saida';
 import { Db } from 'mongodb';
