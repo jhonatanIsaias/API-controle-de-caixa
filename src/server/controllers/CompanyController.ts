@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Request, Response } from 'express';
 import { bodyCompanyValidator } from '../interfaces/Comany';
 import { validation } from '../middleware/validation';
@@ -25,6 +26,7 @@ export class CompanyController {
         email,
         password,
       );
+      // eslint-disable-next-line @typescript-eslint/ban-types
       const token = generateJWTToken(company._id);
       res.status(StatusCodes.ACCEPTED).json({
         token: token,

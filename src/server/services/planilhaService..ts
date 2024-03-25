@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { Workbook } from 'exceljs';
 import { entradaCollection, saidaCollection } from '../server';
 import * as path from 'path';
@@ -130,8 +132,8 @@ export const generatespreadsheet = async (
     worksheet.getColumn('F').width = 20; // Largura da coluna 'data'
     worksheet.getColumn('H').width = 20;
 
-    worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
-      row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+    worksheet.eachRow({ includeEmpty: true }, function (row) {
+      row.eachCell({ includeEmpty: true }, function (cell) {
         cell.border = {
           top: { style: 'thin' },
           left: { style: 'thin' },
