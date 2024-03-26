@@ -184,6 +184,8 @@ export const generatespreadsheet = async (
     // Preenchendo a fórmula compartilhada para as outras células
     worksheet.fillFormula(`F2:F${lastRow.number}`, 'C2-E2');
     const caminhoArquivo = path.resolve(
+      __dirname,
+      '..',
       'temp',
       `planilha${month}-${year}.xlsx`,
     );
